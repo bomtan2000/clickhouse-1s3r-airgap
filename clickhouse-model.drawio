@@ -1,0 +1,137 @@
+<mxfile host="app.diagrams.net" agent="Claude Code" pages="2">
+  <diagram id="topology" name="Topology cluster_1S_3R">
+    <mxGraphModel dx="1442" dy="1524" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=16;" value="&lt;b&gt;ClickHouse cluster_1S_3R&lt;/b&gt; · 1 shard × 3 replica + 3 Keeper · ClickHouse 25.12.1 · data /APP/clickhouse" vertex="1">
+          <mxGeometry height="30" width="900" x="20" y="-40" as="geometry" />
+        </mxCell>
+        <mxCell id="grpServer" parent="1" style="rounded=1;arcSize=3;dashed=1;fillColor=none;strokeColor=#999999;verticalAlign=top;fontStyle=1;fontColor=#666666;html=1;" value="cluster_1S_3R · shard 1" vertex="1">
+          <mxGeometry height="480" width="280" x="460" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="grpKeeper" parent="1" style="rounded=1;arcSize=3;dashed=1;fillColor=none;strokeColor=#999999;verticalAlign=top;fontStyle=1;fontColor=#666666;html=1;" value="Keeper ensemble · quorum 2/3" vertex="1">
+          <mxGeometry height="480" width="220" x="820" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="app" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" value="&lt;b&gt;Application&lt;/b&gt;&lt;div&gt;&lt;br/&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="130" x="20" y="225" as="geometry" />
+        </mxCell>
+        <mxCell id="haproxy" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontFamily=Courier New;" value="&lt;b&gt;HAProxy&lt;/b&gt;&lt;br&gt;:9000 tcp · leastconn&lt;br&gt;:8123 http · roundrobin&lt;br&gt;check 2s · fall 3 · rise 2&lt;br&gt;GET /ping → 200" vertex="1">
+          <mxGeometry height="140" width="180" x="220" y="185" as="geometry" />
+        </mxCell>
+        <mxCell id="s1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;clickhouse-server-01&lt;/b&gt;&lt;br&gt;192.168.62.11&lt;br&gt;replica 1&lt;br&gt;:9000 · :8123" vertex="1">
+          <mxGeometry height="100" width="230" x="485" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="s2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;clickhouse-server-02&lt;/b&gt;&lt;br&gt;192.168.62.12&lt;br&gt;replica 2&lt;br&gt;:9000 · :8123" vertex="1">
+          <mxGeometry height="100" width="230" x="485" y="205" as="geometry" />
+        </mxCell>
+        <mxCell id="s3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;clickhouse-server-03&lt;/b&gt;&lt;br&gt;192.168.62.13&lt;br&gt;replica 3&lt;br&gt;:9000 · :8123" vertex="1">
+          <mxGeometry height="100" width="230" x="485" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="sNote" parent="1" style="text;html=1;align=center;fontSize=10;fontColor=#666666;" value="internal_replication = true · macros shard=1, replica=1..3" vertex="1">
+          <mxGeometry height="25" width="270" x="465" y="465" as="geometry" />
+        </mxCell>
+        <mxCell id="k1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;clickhouse-keeper-01&lt;/b&gt;&lt;br&gt;192.168.62.21&lt;br&gt;server_id 1" vertex="1">
+          <mxGeometry height="100" width="170" x="845" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="k2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;clickhouse-keeper-02&lt;/b&gt;&lt;br&gt;192.168.62.22&lt;br&gt;server_id 2" vertex="1">
+          <mxGeometry height="100" width="170" x="845" y="205" as="geometry" />
+        </mxCell>
+        <mxCell id="k3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;clickhouse-keeper-03&lt;/b&gt;&lt;br&gt;192.168.62.23&lt;br&gt;server_id 3" vertex="1">
+          <mxGeometry height="100" width="170" x="845" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="kNote" parent="1" style="text;html=1;align=center;fontSize=10;fontColor=#666666;fontFamily=Courier New;" value="/clickhouse/tables/1/events" vertex="1">
+          <mxGeometry height="25" width="210" x="825" y="465" as="geometry" />
+        </mxCell>
+        <mxCell id="e_app_ha" edge="1" parent="1" source="app" style="endArrow=classic;html=1;rounded=0;" target="haproxy" value="SQL">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_ha_s1" edge="1" parent="1" source="haproxy" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="s1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_ha_s2" edge="1" parent="1" source="haproxy" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=#ffffff;fontSize=10;" target="s2" value=":9000 / :8123">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_ha_s3" edge="1" parent="1" source="haproxy" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="s3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s1_k" edge="1" parent="1" source="s1" style="endArrow=classic;html=1;rounded=0;strokeColor=#2f6f8f;fontColor=#2f6f8f;fontSize=10;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.1875;entryDx=0;entryDy=0;" target="grpKeeper" value=":9181">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s2_k" edge="1" parent="1" source="s2" style="endArrow=classic;html=1;rounded=0;strokeColor=#2f6f8f;fontColor=#2f6f8f;fontSize=10;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.4896;entryDx=0;entryDy=0;" target="grpKeeper" value=":9181">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_s3_k" edge="1" parent="1" source="s3" style="endArrow=classic;html=1;rounded=0;strokeColor=#2f6f8f;fontColor=#2f6f8f;fontSize=10;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.7917;entryDx=0;entryDy=0;" target="grpKeeper" value=":9181">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_k1_k2" edge="1" parent="1" source="k1" style="endArrow=classic;startArrow=classic;html=1;rounded=0;dashed=1;strokeColor=#2f6f8f;fontColor=#2f6f8f;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="k2" value="raft :9234">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_k2_k3" edge="1" parent="1" source="k2" style="endArrow=classic;startArrow=classic;html=1;rounded=0;dashed=1;strokeColor=#2f6f8f;fontColor=#2f6f8f;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="k3" value="raft :9234">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_k1_k3" edge="1" parent="1" source="k1" style="endArrow=classic;startArrow=classic;html=1;dashed=1;strokeColor=#2f6f8f;edgeStyle=orthogonalEdgeStyle;rounded=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="k3" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1030" y="110" />
+              <mxPoint x="1030" y="400" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ports" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;spacingLeft=8;fillColor=#f5f5f5;strokeColor=#999999;fontSize=11;" value="&lt;b&gt;Ports&lt;/b&gt;&lt;br&gt;9000 native TCP · 8123 HTTP&lt;br&gt;9009 interserver (replicas fetch parts)&lt;br&gt;9181 Keeper client · 9234 Keeper Raft" vertex="1">
+          <mxGeometry height="80" width="380" x="20" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="table" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;spacingLeft=8;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="&lt;b&gt;db1.events_local&lt;/b&gt;&lt;br&gt;ReplicatedReplacingMergeTree&lt;br&gt;PARTITION BY toYYYYMMDD(event_time)&lt;br&gt;ORDER BY (event_time, id) · TTL 60 days&lt;br&gt;_origin = getMacro(&#39;site&#39;) · _ingested = now()&lt;br&gt;&lt;b&gt;db1.events&lt;/b&gt; = Distributed(cluster_1S_3R, sipHash64(id))" vertex="1">
+          <mxGeometry height="120" width="380" x="20" y="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="dcdr" name="DC-DR sync (thiết kế)">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1240" pageHeight="600" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t2" value="&lt;b&gt;DC ↔ DR sync&lt;/b&gt; · 2 independent clusters + sync node (design only, sync script not in this repo)" style="text;html=1;align=left;verticalAlign=middle;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="20" y="-40" width="900" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dc" value="&lt;b&gt;DC cluster&lt;/b&gt;&lt;br&gt;3 servers · own 3 keepers&lt;br&gt;macro {site} = DC&lt;br&gt;&lt;br&gt;db1.events&lt;br&gt;(rows with _origin = DC + DR)&lt;br&gt;&lt;br&gt;ch_sync.sync_state&lt;br&gt;(watermark for DR→DC)" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="20" y="40" width="300" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="dr" value="&lt;b&gt;DR cluster&lt;/b&gt;&lt;br&gt;3 servers · own 3 keepers&lt;br&gt;macro {site} = DR&lt;br&gt;&lt;br&gt;db1.events&lt;br&gt;(rows with _origin = DR + DC)&lt;br&gt;&lt;br&gt;ch_sync.sync_state&lt;br&gt;(watermark for DC→DR)" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="900" y="40" width="300" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="sync" value="&lt;b&gt;Sync node&lt;/b&gt;&lt;br&gt;clickhouse-client&lt;br&gt;ch_sync.sh&lt;br&gt;systemd timer&lt;br&gt;&lt;i&gt;stores no data&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="510" y="90" width="200" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="d1" value="SELECT _origin=&#39;DC&#39;&lt;br&gt;AND _ingested &amp;gt; watermark" style="endArrow=classic;html=1;rounded=0;strokeColor=#b07a00;fontColor=#b07a00;strokeWidth=2;fontSize=10;labelBackgroundColor=#ffffff;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="dc" target="sync">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d2" value="INSERT" style="endArrow=classic;html=1;rounded=0;strokeColor=#b07a00;fontColor=#b07a00;strokeWidth=2;fontSize=10;labelBackgroundColor=#ffffff;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;" edge="1" parent="1" source="sync" target="dr">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r1" value="SELECT _origin=&#39;DR&#39;&lt;br&gt;AND _ingested &amp;gt; watermark" style="endArrow=classic;html=1;rounded=0;strokeColor=#2f6f8f;fontColor=#2f6f8f;strokeWidth=2;fontSize=10;labelBackgroundColor=#ffffff;exitX=0;exitY=0.7;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="dr" target="sync">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r2" value="INSERT" style="endArrow=classic;html=1;rounded=0;strokeColor=#2f6f8f;fontColor=#2f6f8f;strokeWidth=2;fontSize=10;labelBackgroundColor=#ffffff;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.7;entryDx=0;entryDy=0;" edge="1" parent="1" source="sync" target="dc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="appDC" value="Application, DC site" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="95" y="360" width="150" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="appDR" value="Application, DR site" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="975" y="360" width="150" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="wDC" value="writes locally" style="endArrow=classic;html=1;rounded=0;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="appDC" target="dc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wDR" value="writes locally" style="endArrow=classic;html=1;rounded=0;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="appDR" target="dr">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="Each direction only copies rows with _origin = source site and _ingested newer than the watermark stored on the target.&lt;br&gt;Copied rows keep their _origin, so they are never copied back (no loop).&lt;br&gt;Re-runs / overlapping windows are safe: ReplacingMergeTree dedups on (event_time, id)." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;spacingLeft=8;fillColor=#f5f5f5;strokeColor=#999999;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="380" y="340" width="460" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

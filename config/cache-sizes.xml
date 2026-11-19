@@ -1,0 +1,6 @@
+<!-- Static cache sizes I used before tune_ram_cache_app.sh existed.
+     Goes into /etc/clickhouse-server/config.xml (or a config.d/ file). 2 GiB each. -->
+<clickhouse>
+  <mark_cache_size>2147483648</mark_cache_size>
+  <uncompressed_cache_size>2147483648</uncompressed_cache_size>
+</clickhouse>

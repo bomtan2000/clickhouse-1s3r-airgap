@@ -1,0 +1,27 @@
+# Inventory for setup_1s3r_airgap_app.sh and tune_ram_cache_app.sh
+###############################################################################
+# DIRECTORIES (absolute paths on the nodes)
+###############################################################################
+APP_BASE=/APP/clickhouse
+
+# Where the RPMs are scp'd on each node before install.
+REMOTE_RPM_DIR=/opt/rpm-clickhouse
+
+###############################################################################
+# APPLICATION USER (gets access_management)
+CH_USER=appuser
+
+# Password: everything after '=' up to end of line (may contain '#').
+# LAB VALUE. Only its sha256 is written to the nodes.
+CH_PASSWORD=ChLab@123
+
+###############################################################################
+# NODES: <role> <ip> <hostname>
+###############################################################################
+server 192.168.62.11 clickhouse-server-01
+server 192.168.62.12 clickhouse-server-02
+server 192.168.62.13 clickhouse-server-03
+
+keeper 192.168.62.21 clickhouse-keeper-01
+keeper 192.168.62.22 clickhouse-keeper-02
+keeper 192.168.62.23 clickhouse-keeper-03
